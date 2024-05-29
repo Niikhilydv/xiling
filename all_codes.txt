@@ -1,0 +1,459 @@
+----------------------------------------Experiment 2 ---------------------------------------
+
+module half_adder_dataflow (
+  input a,    // Input 'a'
+  input b,    // Input 'b'
+  output s,   // Output 's' (Sum)
+  output c    // Output 'c' (Carry)
+);
+
+  assign s = a ^ b;  // Dataflow expression for sum
+  assign c = a & b;  // Dataflow expression for carry
+endmodule
+
+
+module half_adder_behavioral (
+  input a,    // Input 'a'
+  input b,    // Input 'b'
+  output s,   // Output 's' (Sum)
+  output c    // Output 'c' (Carry)
+);
+
+  // Combinational logic equations for sum and carry
+  always @(*) begin
+    s = a ^ b;  // XOR operation for sum
+    c = a & b;  // AND operation for carry
+  end
+
+endmodule
+
+
+
+// test bench
+module half1_adder;
+  // Declare registers
+  reg d;    // Register 'd' for input 'a'
+  reg e;    // Register 'e' for input 'b'
+  
+  // Declare wires
+  wire f;   // Wire 'f' for output 's' (Sum)
+  wire g;   // Wire 'g' for output 'c' (Carry)
+  
+  // Instantiate half_adder module
+  half_adder half2_adder (.a(d), .b(e), .s(f), .c(g));
+  
+  // Initial block for simulation
+  initial begin
+    $dumpvars(1, half1_adder); // Enable waveform dumping for simulation
+    
+    // Test case 1
+    d = 1'b1;                   // Assign input 'a' as 1
+    $display("a=%b", d);        // Display value of input 'a'
+    e = 1'b1;                   // Assign input 'b' as 1
+    $display("b=%b", e);        // Display value of input 'b'
+    #10;                        // Wait for 10 time units
+    $display("s=%b", f);        // Display value of output 's' (Sum)
+    $display("c=%b", g);        // Display value of output 'c' (Carry)
+    
+    // Test case 2
+    d = 1'b0;                   // Assign input 'a' as 0
+    $display("a=%b", d);        // Display value of input 'a'
+    e = 1'b1;                   // Assign input 'b' as 1
+    $display("b=%b", e);        // Display value of input 'b'
+    #10;                        // Wait for 10 time units
+    $display("s=%b", f);        // Display value of output 's' (Sum)
+    $display("c=%b", g);        // Display value of output 'c' (Carry)
+    
+    // Test case 3
+    d = 1'b1;                   // Assign input 'a' as 1
+    $display("a=%b", d);        // Display value of input 'a'
+    e = 1'b0;                   // Assign input 'b' as 0
+    $display("b=%b", e);        // Display value of input 'b'
+    #10;                        // Wait for 10 time units
+    $display("s=%b", f);        // Display value of output 's' (Sum)
+    $display("c=%b", g);        // Display value of output 'c' (Carry)
+    
+    // Test case 4
+    d = 1'b0;                   // Assign input 'a' as 0
+    $display("a=%b", d);        // Display value of input 'a'
+    e = 1'b0;                   // Assign input 'b' as 0
+    $display("b=%b", e);        // Display value of input 'b'
+    #10;                        // Wait for 10 time units
+    $display("s=%b", f);        // Display value of output 's' (Sum)
+    $display("c=%b", g);        // Display value of output 'c' (Carry)
+  end
+endmodule
+
+
+--------------------------------------Experiment 3 -----------------------------------------
+
+
+
+//full adder using data-flow modeling
+module full_adder_d (
+    input a,b,cin,
+    output sum,carry
+);
+
+assign sum = a ^ b ^ cin;
+assign carry = (a & b) | (b & cin)  | (cin & a) ;
+
+endmodule
+
+
+
+// Behavioral code for full adder 
+module Full_Adder_Behavioral_Verilog( 
+  input X1, X2, Cin, 
+  output S, Cout
+  );  
+    reg[1:0] temp;
+   always @(*)
+   begin 
+   temp = {1'b0,X1} + {1'b0,X2}+{1'b0,Cin};
+   end 
+   assign S = temp[0];
+   assign Cout = temp[1];
+endmodule  
+
+
+
+// Testbench code of the behavioral code for full adder 
+`timescale 10ns/ 10ps;
+module Testbench_Behavioral_adder();
+ reg A,B,Cin;
+ wire S,Cout;  
+ //Verilog code for the structural full adder 
+ Full_Adder_Behavioral_Verilog Behavioral_adder(
+    .X1(A),
+    .X2(B),
+    .Cin(Cin),
+    .S(S),
+    .Cout(Cout) 
+   );
+ initial begin
+   A = 0;
+   B = 0;
+   Cin = 0;
+   #5;
+   A = 0;
+   B = 0;
+   Cin = 1;
+   #5;  
+   A = 0;
+   B = 1;
+   Cin = 0;
+   #5;
+   A = 0;
+   B = 1;
+   Cin = 1;
+   #5;
+   A = 1;
+   B = 0;
+   Cin = 0;
+   #5;
+   A = 1;
+   B = 0;
+   Cin = 1;
+   #5;
+   A = 1;
+   B = 1;
+   Cin = 0;
+   #5;  
+   A = 1;
+   B = 1;
+   Cin = 1;
+   #5;  
+  end
+      
+endmodule 
+
+-----------------------------------------Experiment 5 --------------------------------------
+
+//4:1 multiplexer using data-flow modeling
+module m41 ( input a, 
+input b, 
+input c, 
+input d, 
+input s0, s1,
+output out); 
+
+ assign out = s1 ? (s0 ? d : c) : (s0 ? b : a); 
+
+endmodule
+
+
+
+//final code for 4×1 MUX in behavioral modeling 
+
+module m41 ( a, b, c, d, s0, s1, out);
+
+input wire a, b, c, d;
+input wire s0, s1;
+output reg out;
+
+always @ (a or b or c or d or s0, s1)
+begin
+
+case (s0 | s1)
+2'b00 : out <= a;
+2'b01 : out <= b;
+2'b10 : out <= c;
+2'b11 : out <= d;
+endcase
+
+end
+
+endmodule
+
+
+//test bench
+module top;
+
+wire  out;
+reg  a;
+reg  b;
+reg  c;
+reg  d;
+reg s0, s1;
+
+m41 name(.out(out), .a(a), .b(b), .c(c), .d(d), .s0(s0), .s1(s1));
+ initial
+ begin
+
+ a=1'b0; b=1'b0; c=1'b0; d=1'b0;
+ s0=1'b0; s1=1'b0;
+ #500 $finish;
+
+end
+
+always #40 a=~a;
+always #20 b=~b;
+always #10 c=~c;
+always #5 d=~d;
+always #80 s0=~s0;
+always #160 s1=~s1;
+
+always@(a or b or c or d or s0 or s1) 
+$monitor("At time = %t, Output = %d", $time, out);
+
+endmodule;
+
+  ------------------------------Experiment 4-------------------------------------------
+
+//full adder code 
+module full_adder(in0, in1, cin, out, cout);
+	input in0, in1, cin;
+	output out, cout;
+
+	assign out = in0 ^ in1 ^ cin;
+	assign cout = ((in0 ^ in1) & cin) | (in0 & in1);
+endmodule
+
+// 4 bit ripple carry adder code
+module ripple_carry_adder(in0, in1, out, cout);
+	input [3:0] in0;
+	input [3:0] in1;
+	output [3:0] out;
+	output cout;
+
+	wire c1, c2, c3;
+	full_adder fa0(in0[0], in1[0], 0, out[0], c1);
+	full_adder fa1(in0[1], in1[1], c1, out[1], c2);
+	full_adder fa2(in0[2], in1[2], c2, out[2], c3);
+	full_adder fa3(in0[3], in1[3], c3, out[3], cout);
+
+endmodule
+
+//test bench code 
+module ripple_carry_adder_tb ();
+
+reg [3:0] in0 = 4'b0, in1 = 4'b0;
+wire [3:0] out;
+wire cout;
+
+ripple_carry_adder rca(.in0(in0), .in1(in1), .out(out), .cout(cout));
+
+initial repeat(255) #10 {in0,in1} = {in0,in1} + 8'b1;
+
+initial begin
+    $dumpfile("ripple-carry-adder.vcd");
+    $dumpvars(0, ripple_carry_adder_tb);
+    $monitor($time, ": %b + %b = %b, %b", in0, in1, out, cout);
+end
+
+endmodule
+
+
+
+------------------------------Experiment 6 ----------------------------------------------
+
+
+//Designing code:
+module encoder_8X3(
+input [7:0]i,
+output [2:0]y
+);
+assign y[2]=i[7] | i[6] | i[5] | i[4];
+assign y[1]=i[7] | i[6] | i[3] | i[2];
+assign y[0]=i[7] | i[5] | i[3] | i[1];
+
+
+//endmodule Test_benchcode:
+module encoder_tb;
+reg [7:0]i;
+wire [2:0]y;
+initial
+$monitor($time," i=%b, y=%b",i,y);
+initial
+begin
+#0 i=8'b00000001;
+#10 i=8'b00000010;
+#10 i=8'b00000100;
+#10 i=8'b00001000;
+#10 i=8'b00010000;
+#10 i=8'b00100000;
+#10 i=8'b01000000;
+#10 i=8'b10000000;
+#10 $stop;
+end
+encoder_8X3 g1(i,y);
+endmodule
+
+
+--------------------------------------Experiment 7 -----------------------------------------
+
+
+//3:8 Decoder Verilog Code
+module decoder3_to_8( in,out, en);
+input [2:0]  in;
+input en;
+output [7:0] out;
+  reg [7:0] out;
+
+ always @( in or en)
+	begin
+
+      if (en) 
+        begin
+          out=8'd0;
+          case (in)
+              3'b000: out[0]=1'b1;
+              3'b001: out[1]=1'b1;
+              3'b010: out[2]=1'b1;
+              3'b011: out[3]=1'b1;
+              3'b100: out[4]=1'b1;
+              3'b101: out[5]=1'b1;
+              3'b110: out[6]=1'b1;
+              3'b111: out[7]=1'b1;
+              default: out=8'd0;
+          endcase
+      end
+else 
+out=8'd0;
+end
+endmodule
+
+
+//Test Bench
+module decoder_tb;
+wire [7:0] out;
+reg en;
+reg [2:0] in;
+integer i;
+
+decoder3_to_8 dut(in,out,en);
+
+initial begin  
+ $monitor( "en=%b, in=%d, out=%b ", en, in, out);
+   for ( i=0; i<16; i=i+1) 
+        begin
+           {en,in}  = i;
+            #1;
+        end
+end
+endmodule
+
+
+----------------------------------------Experiment 8 ----------------------------------------------
+
+
+module SR_ff(s,r,clk,reset,q,q_bar);
+ 
+input s,r,clk,reset;
+ 
+output q,q_bar;
+ 
+wire s,r,clk;
+reg q,q_bar;
+ 
+always @(posedge clk) begin
+ 
+if (reset) begin
+q=1'b0;
+q_bar=1'b1;
+ 
+end else begin
+ 
+case({s,r})
+{1'b0,1'b0}: begin q=q;q_bar=q_bar; end
+{1'b0,1'b1}: begin q=1'b0;q_bar=1'b1; end
+{1'b1,1'b0}: begin q=1'b1;q_bar=1'b0; end
+{1'b1,1'b1}: begin q=1'bx; q_bar=1'bx; end
+endcase
+ 
+end
+ 
+end
+endmodule
+
+
+//test bench
+module SR_ff_tb;
+ 
+reg clk;
+reg reset;
+reg s,r;
+ 
+wire q;
+wire qb;
+ 
+SR_ff srflipflop( .clk(clk), .reset(reset), .s(s), .r(r), .q(q), .q_bar(qb) );
+ 
+initial begin
+$monitor(clk,s,r,q,qb,reset);
+ 
+s = 1'b0;
+r = 1'b0;
+reset = 1;
+clk=1;
+ 
+#10
+reset=0;
+s=1'b1;
+r=1'b0;
+ 
+#100
+reset=0;
+s=1'b0;
+r=1'b1;
+ 
+#100
+reset=0;
+s=1'b1;
+r=1'b1;
+ 
+#100
+reset=0;
+s=1'b0;
+r=1'b0;
+ 
+#100
+reset=1;
+s=1'b1;
+r=1'b0;
+ 
+end
+always #25 clk <= ~clk;
+ 
+endmodule
