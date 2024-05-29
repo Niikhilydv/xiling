@@ -1,0 +1,67 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 01/24/2024 03:18:38 PM
+// Design Name: 
+// Module Name: full_addr
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+//structural model
+//module full_addr(output s ,ci, input a,b,c);
+//wire t1,t2,p;
+//xor(s,a,b,c);
+//xor(p,a,b);
+//and(t1,p,c);
+//and(t2,a,b);
+//or(ci,t1,t2);
+
+//endmodule
+
+////data flow model
+//module full_addr(output s ,ci, input a,b,c);
+//assign s=a^b^c;
+//assign ci=(a&b)|(b&c)|(c&a);
+//endmodule
+//behavioural model define output as reg else same as data flow model always @(*) begin end used
+//assign should not used ,synthesis not work
+//module full_addr(output reg s ,ci, input a,b,c);
+//always @(*)
+//begin
+// s=a^b^c;
+// ci=(a&b)|(b&c)|(c&a);
+// end
+//endmodule
+// this gives the best schematic i understand easily 
+//half substractor D=xor(a,b), B=and(abar,b)
+//a=1'b0(1 bit binary value zero)
+//full subtractor d=a^b^bi,B=(~(a^b)&bi)|(~a&b)
+
+
+//instantiation concept full adder by half adder 
+module full_addr(output s,ci,input a,b,c);
+wire t1,t2,k;
+half_adder v1(t1,t2,a,b);
+half_adder v2(s,k,t1,c);
+or(ci,t2,k);
+endmodule
+
+module half_adder(output reg s,c,input a,b);
+always @(*)
+begin
+s=a^b;
+c=a&b;
+end
+endmodule

@@ -1,0 +1,43 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 01/31/2024 01:57:48 PM
+// Design Name: 
+// Module Name: add_4_bit
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module add_4_bit(s,co,a,b,ci);
+output[3:0]s;
+output co;
+input[3:0]a,b;
+input ci;
+wire[2:0]c;
+//number of wires k liye aisey bus bna k , isme jaisey teen wires hai 
+full_addr add1(s[0],c[0],a[0],b[0],ci);
+full_addr add2(s[1],c[1],a[1],b[1],c[0]);
+full_addr add3(s[2],c[2],a[2],b[2],c[1]);
+full_addr add4(s[3],co,a[3],b[3],c[2]);
+endmodule
+
+module full_addr(output reg s,co,input a,b,c);
+always @(*)
+begin
+s=a^b^c;
+co=(a&b)|(b&c)|(c&a);
+end 
+endmodule
+

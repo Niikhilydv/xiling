@@ -1,0 +1,49 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 01/22/2024 04:10:16 PM
+// Design Name: 
+// Module Name: half_adder_tst
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+//for test bench input as reg and output will be as wire 
+
+module half_adder_tst;
+//input reg is as input we want to save sometime 
+reg a;
+reg b;
+//out
+wire s;
+wire c;
+//.s file will map itself so no need to write in order 
+//uut file name of file then unit under test , no need to write in order
+half_adder uut(
+.s(s),
+.c(c),
+.a(a),
+.b(b)
+);
+initial begin
+//intialize input <size- 1><type -bit > number
+a= 1'b0;
+b= 1'b0;   
+#2 a=1'b0 ; b=1'b1;
+#2 a=1'b1 ; b=1'b0;
+#2 a=1'b1 ; b=1'b1;
+end
+initial $monitor("time=%g,s=%b,c=%b,a=%b,b=%b",$time,s,c,a,b);
+initial #10 $finish;
+endmodule
+//dollar finish is used to get back to window

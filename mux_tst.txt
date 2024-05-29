@@ -1,0 +1,43 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 02/07/2024 02:21:35 PM
+// Design Name: 
+// Module Name: mux_tst
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module mux_tst;
+//input
+wire out ;
+
+reg[1:0] in;
+reg s;
+
+
+mux uut(
+.out(out),
+.in(in),
+.s(s)
+);
+initial begin 
+in =2'b00;
+s=0;
+end
+always #2 s=s+1;
+always #1 in=in+1;
+initial #20 $finish;
+endmodule

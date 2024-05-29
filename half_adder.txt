@@ -1,0 +1,43 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 01/21/2024 07:19:18 PM
+// Design Name: 
+// Module Name: half_adder
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+//half adder using structural model
+//module half_adder(output s,c,input a,b);
+//xor(s,a,b);
+//and(c,a,b);
+//endmodule
+
+//half adder using data flow model
+//module half_adder(output s,c,input a,b);
+//assign s=a^b;
+//assign c=a&b;
+//endmodule
+
+//half adder using behavioural model
+//if u r using always begin then use reg for output no matter comb or seq
+//* shows any changes in input then below that block will execute 
+module half_adder(output reg s,c,input a,b);
+always @(*)
+begin
+s=a^b;
+c=a&b;
+end
+endmodule
